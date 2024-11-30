@@ -196,13 +196,34 @@ p {
   transition: 0.7s ease;
   margin-bottom: 50PX;
 }
+.C-Card {
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+  min-height: 6em;
+  width: 17em;
+  overflow: hidden;
+  border-radius: 10px;
+  transition: 0.7s ease;
+  margin-bottom: 60PX;
+  text-align: center;
+  justify-content: center;
+}
+h6{
+  padding-left: 40px;
+  padding-top: 20px;
+}
+.content .C-Card {
+  box-shadow: 0 5px 25px rgb(1 1 1 / 50%);
+  border-radius: 15px;
+
+}
 .gameTitle {
 
   display: flex;
   justify-content: space-between;
   text-transform: uppercase;
   font-weight: 800;
-  margin-top: 10px;
+  margin-top: 5px;
   white-space: nowrap;
 }
 .game-category {
@@ -405,4 +426,18 @@ body {
     display: none;
 
   }
+}
+.cont{
+  display: flex;
+  align-items: center;
+  /* background: url(images/background1.png) no-repeat; */
+  background-size: cover;
+  background-position: center;
+  background-position-x: center;
+  background-position-y: center;
+  background-attachment: fixed;
+ 
+  justify-content: center;
+ flex-direction: column;
+  background-color: rgb(255, 255, 255);
 }
