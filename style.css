@@ -388,7 +388,7 @@ body {
   
   transition: translate var(--animation-timing);
   translate: -200%;
-  z-index: -98;
+  z-index: 98;
   padding: 0.5rem 1rem;
   padding-top: calc(var(--hamburger-height) + var(--hamburger-margin) + 1rem);
   background-color: var(--foreground);
