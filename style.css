@@ -8,6 +8,7 @@
     
     
 }*/
+
 .bottom{
   text-align: center;
 }
@@ -383,8 +384,10 @@ body {
   opacity: 0;
   width: 0;
 }
-
-.sidebar {
+.sidebar.n{
+  display : none;
+}
+.sidebar.active {
   
   transition: translate var(--animation-timing);
   translate: -200%;
