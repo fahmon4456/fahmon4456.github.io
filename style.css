@@ -1,13 +1,5 @@
 
-/*#do{
-    background-color:red;
-    width: 50px;
-    height: 50px;
-    margin-top: 10%;
-    margin-left: 10%;
-    
-    
-}*/
+@import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
 
 .bottom{
   text-align: center;
@@ -121,9 +113,38 @@ h2 {
    flex-direction: column;
    
 }
+.logo{
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif!important;
+}
 .mid {
   padding-top: 30px;
   padding-bottom: 50px;
+
+}
+h2{
+  font-family: 'Droid Arabic Kufi', serif;
+}
+span{
+  font-family: 'Droid Arabic Kufi', serif;
+}
+h3{
+  font-family: 'Droid Arabic Kufi', serif;
+}
+a{
+  font-family: 'Droid Arabic Kufi', serif;
+}
+p {
+  font-family: 'Droid Arabic Kufi', serif;}
+.GameCard p {
+  font-family: 'Droid Arabic Kufi', serif;
+  text-align:center ;
+  font-size: 1.2em;
+  font-weight: 700;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-right: 50px;
+  padding-left: 50px;
+  
 }
 p {
   display: block;
@@ -139,7 +160,9 @@ p {
   padding-bottom: 30px;
   padding-right: 50px;
   padding-left: 50px;
+  color: #01261C;
 }
+
 .mid{
   display: flex;
     align-items: center;
@@ -187,10 +210,11 @@ p {
  
 }
 .GameCard {
+  box-shadow:0 1px 20px #ffffff, 0 1px 17px #ffffff;
   background-color: #ffffff;
   border: 1px solid #ffffff;
-  min-height: 14em;
-  width: 18em;
+  height: 497.43px;
+  width: 288px;
   overflow: hidden;
   border-radius: 10px;
   margin: 25px;
@@ -233,6 +257,7 @@ h6{
   color: black;
 }
 button{
+  box-shadow:0 1px 10px #04BF8A, 0 1px 10px #04BF8A;
   border-radius: 24px!important;
   background-color: #04BF8A!important;
   border-color: #04BF8A!important;
@@ -241,14 +266,17 @@ button{
     height: 65px;
     transition: all 3s ease-in-out;
 }
-
+.ll{
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif!important;
+}
 button:active {
-    transform: translate(0px, 5px);
-    -webkit-transform: translate(0px, 5px);
-    box-shadow: 0px 1px 0px 0px;
+    transform: translate(0px, 5px)!important;
+    -webkit-transform: translate(0px, 5px)!important;
+    box-shadow: 0px 1px 0px 0px!important;
   }
 button:hover{
-   transform: scale(1.2) perspective(1px);
+   transform: scale(1.2) perspective(1px)!important;
+   box-shadow:0 1px 20px #04BF8A, 0 1px 20px #04BF8A;
 }
 svg{
     fill:#ffffff;
@@ -267,7 +295,7 @@ svg:hover{
     color: #038c65;
     font-size: 1.5em;
     font-weight: 700;
-    letter-spacing: 1px;
+   
     margin-bottom: 10px;
 
 }
@@ -285,6 +313,10 @@ svg:hover{
 img {
   overflow-clip-margin: content-box;
   overflow: clip;
+  min-width: 287px;
+  min-height: 287px;
+  max-width: 287px;
+  max-height: 287px;
 }
 .PlayNow {
   text-decoration: none;
