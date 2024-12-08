@@ -455,6 +455,17 @@ body {
   .up .navigation{
     display : none;
   }
+  header {
+    background-color: white;
+    width: 100%;
+    position: fixed;
+    z-index: 999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0px;
+    display: flex;
+}
 }
 @media (min-width: 767px){
   .bur {
