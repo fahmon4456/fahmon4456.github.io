@@ -2,320 +2,241 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
+<title>Admin Dashboard</title>
 
-    body {
-      font-family: Arial;
-      background: #f5f5f5;
-      padding: 20px;
-    }
+<style>
 
-    h1 {
-      color: #222;
-    }
+/* ===== BASE ===== */
+body {
+  font-family: Arial;
+  background: #f5f5f5;
+  margin: 0;
+  padding: 12px;
+}
 
-    .student {
-      background: white;
-      padding: 15px;
-      margin-top: 10px;
-      border-radius: 12px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+/* ===== HEADER ===== */
+h1 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
 
-    .name {
-      font-size: 22px;
-      font-weight: bold;
-    }
+/* ===== CARDS ===== */
+.student {
+  background: white;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
 
-    .points {
-      margin-top: 5px;
-      margin-bottom: 10px;
-      color: #444;
-    }
+/* NAME + TEXT */
+.name {
+  font-size: 18px;
+  font-weight: bold;
+}
 
-    input {
-      padding: 8px;
-      margin-right: 5px;
-      margin-top: 5px;
-      width: 100px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
+.points {
+  font-size: 14px;
+  margin: 6px 0;
+  color: #444;
+}
 
-    button {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      cursor: pointer;
-      margin-top: 20px;
-    }
+/* ===== INPUTS ===== */
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
 
-    .save {
-      background: green;
-    }
+/* ===== BUTTONS ===== */
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+}
 
-    .logout {
-      background: black;
-    }
+/* COLORS */
+.save { background: green; }
+.logout { background: black; }
+.addStudent { background: dodgerblue; }
 
-    .addStudent {
-      background: dodgerblue;
-    }
+/* ===== TOP SECTION ===== */
+.topBox {
+  background: white;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
 
-    .topBox {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+/* ===== GRID FIX FOR SMALL SCREENS ===== */
+@media (min-width: 700px) {
 
-  </style>
+  body {
+    max-width: 800px;
+    margin: auto;
+  }
+
+  button {
+    width: auto;
+    padding: 10px 15px;
+  }
+
+  input {
+    width: auto;
+  }
+}
+
+</style>
 </head>
 
 <body>
 
-  <script>
+<script>
+if (localStorage.getItem("admin") !== "true") {
+  window.location.href = "index.html";
+}
+</script>
 
-    // PAGE PROTECTION
-    if (localStorage.getItem("admin") !== "true") {
+<h1>Admin Dashboard</h1>
 
-      window.location.href = "index.html";
+<button class="logout" onclick="logout()">Logout</button>
 
-    }
+<!-- ADD STUDENT -->
+<div class="topBox">
 
-  </script>
+  <h3>Add Student</h3>
 
-  <h1>Admin Dashboard</h1>
+  <input id="newName" placeholder="Student name">
+  <input id="newPoints" type="number" placeholder="Points">
 
-  <button
-    class="logout"
-    onclick="logout()">
-
-    Logout
-
+  <button class="addStudent" onclick="addStudent()">
+    Add Student
   </button>
 
-  <!-- ADD NEW STUDENT -->
+</div>
 
-  <div class="topBox">
+<!-- STUDENTS -->
+<div id="students"></div>
 
-    <h2>Add New Student</h2>
+<button class="save" onclick="saveAllChanges()">
+  Save All Changes
+</button>
 
-    <input
-      id="newName"
-      placeholder="Student name">
+<script>
 
-    <input
-      id="newPoints"
-      type="number"
-      placeholder="Points">
+const API_URL =
+"https://script.google.com/macros/s/AKfycbziHTPIKYehe8NEZStkfbh6uWL16TNxnQ9aaa0tXqFM6bpq6hcSupBUg1mIM1EYpnUK/exec";
 
-    <button
-      class="addStudent"
-      onclick="addStudent()">
+let students = [];
 
-      Add Student
+/* LOAD */
+function loadStudents() {
 
-    </button>
+fetch(API_URL)
+.then(res => res.json())
+.then(data => {
 
-  </div>
+students = data.slice(1);
 
-  <!-- STUDENTS -->
+const container = document.getElementById("students");
+container.innerHTML = "";
 
-  <div id="students"></div>
+students.forEach((row, i) => {
 
-  <button
-    class="save"
-    onclick="saveAllChanges()">
+const name = row[0];
+const points = Number(row[1]);
 
-    Save All Changes
+const div = document.createElement("div");
+div.className = "student";
 
-  </button>
+div.innerHTML = `
+  <div class="name">${name}</div>
+  <div class="points">${points} points</div>
 
-  <script>
+  <input id="add-${i}" type="number" placeholder="Add">
+  <input id="take-${i}" type="number" placeholder="Take">
+  <input id="set-${i}" type="number" placeholder="Set">
+`;
 
-    const API_URL =
-      "https://script.google.com/macros/s/AKfycbziHTPIKYehe8NEZStkfbh6uWL16TNxnQ9aaa0tXqFM6bpq6hcSupBUg1mIM1EYpnUK/exec";
+container.appendChild(div);
 
-    let students = [];
+});
 
-    // LOAD STUDENTS
-    function loadStudents() {
+});
 
-      fetch(API_URL)
+}
 
-      .then(res => res.json())
+/* SAVE ALL */
+async function saveAllChanges() {
 
-      .then(data => {
+for (let i = 0; i < students.length; i++) {
 
-        students = data.slice(1);
+const name = students[i][0];
+let current = Number(students[i][1]);
 
-        const container =
-          document.getElementById("students");
+const add = Number(document.getElementById(`add-${i}`).value) || 0;
+const take = Number(document.getElementById(`take-${i}`).value) || 0;
+const setValue = document.getElementById(`set-${i}`).value;
 
-        container.innerHTML = "";
+let final;
 
-        students.forEach((row, index) => {
+if (setValue !== "") {
+final = Number(setValue);
+} else {
+final = current + add - take;
+}
 
-          const name = row[0];
+await fetch(
+`${API_URL}?action=update&name=${name}&points=${final}`
+);
 
-          const points =
-            Number(row[1]);
+}
 
-          const div =
-            document.createElement("div");
+alert("Saved!");
+loadStudents();
 
-          div.className = "student";
+}
 
-          div.innerHTML = `
+/* ADD STUDENT */
+function addStudent() {
 
-            <div class="name">
-              ${name}
-            </div>
+const name = document.getElementById("newName").value.trim();
+const points = document.getElementById("newPoints").value.trim();
 
-            <div class="points">
-              Current Points: ${points}
-            </div>
+if (!name || points === "") {
+alert("Fill all fields");
+return;
+}
 
-            <input
-              type="number"
-              id="add-${index}"
-              placeholder="Add">
+fetch(`${API_URL}?action=update&name=${name}&points=${points}`)
+.then(() => {
+document.getElementById("newName").value = "";
+document.getElementById("newPoints").value = "";
+loadStudents();
+});
 
-            <input
-              type="number"
-              id="take-${index}"
-              placeholder="Take">
+}
 
-            <input
-              type="number"
-              id="set-${index}"
-              placeholder="Set">
+/* LOGOUT */
+function logout() {
+localStorage.removeItem("admin");
+window.location.href = "index.html";
+}
 
-          `;
+loadStudents();
 
-          container.appendChild(div);
-
-        });
-
-      });
-
-    }
-
-    // SAVE ALL CHANGES
-    async function saveAllChanges() {
-
-      for (let i = 0; i < students.length; i++) {
-
-        const name =
-          students[i][0];
-
-        let currentPoints =
-          Number(students[i][1]);
-
-        const add =
-          Number(
-            document.getElementById(`add-${i}`).value
-          ) || 0;
-
-        const take =
-          Number(
-            document.getElementById(`take-${i}`).value
-          ) || 0;
-
-        const setValue =
-          document.getElementById(`set-${i}`).value;
-
-        let finalPoints;
-
-        // SET OVERRIDES EVERYTHING
-        if (setValue !== "") {
-
-          finalPoints =
-            Number(setValue);
-
-        }
-
-        else {
-
-          finalPoints =
-            currentPoints + add - take;
-
-        }
-
-        // UPDATE DATABASE
-        await fetch(
-
-          `${API_URL}?action=update&name=${name}&points=${finalPoints}`
-
-        );
-
-      }
-
-      alert("All changes saved!");
-
-      loadStudents();
-
-    }
-
-    // ADD NEW STUDENT
-    function addStudent() {
-
-      const name =
-        document.getElementById("newName").value.trim();
-
-      const points =
-        document.getElementById("newPoints").value.trim();
-
-      // VALIDATION
-      if (!name || points === "") {
-
-        alert("Fill all fields.");
-
-        return;
-
-      }
-
-      fetch(
-
-        `${API_URL}?action=update&name=${name}&points=${points}`
-
-      )
-
-      .then(res => res.text())
-
-      .then(data => {
-
-        alert("Student added!");
-
-        document.getElementById("newName").value = "";
-
-        document.getElementById("newPoints").value = "";
-
-        loadStudents();
-
-      });
-
-    }
-
-    // LOGOUT
-    function logout() {
-
-      localStorage.removeItem("admin");
-
-      window.location.href = "index.html";
-
-    }
-
-    // START
-    loadStudents();
-
-  </script>
+</script>
 
 </body>
 </html>
