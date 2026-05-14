@@ -62,6 +62,18 @@
       background: black;
     }
 
+    .addStudent {
+      background: dodgerblue;
+    }
+
+    .topBox {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
   </style>
 </head>
 
@@ -69,7 +81,7 @@
 
   <script>
 
-    // PROTECTION
+    // PAGE PROTECTION
     if (localStorage.getItem("admin") !== "true") {
 
       window.location.href = "index.html";
@@ -87,6 +99,33 @@
     Logout
 
   </button>
+
+  <!-- ADD NEW STUDENT -->
+
+  <div class="topBox">
+
+    <h2>Add New Student</h2>
+
+    <input
+      id="newName"
+      placeholder="Student name">
+
+    <input
+      id="newPoints"
+      type="number"
+      placeholder="Points">
+
+    <button
+      class="addStudent"
+      onclick="addStudent()">
+
+      Add Student
+
+    </button>
+
+  </div>
+
+  <!-- STUDENTS -->
 
   <div id="students"></div>
 
@@ -124,7 +163,9 @@
         students.forEach((row, index) => {
 
           const name = row[0];
-          const points = Number(row[1]);
+
+          const points =
+            Number(row[1]);
 
           const div =
             document.createElement("div");
@@ -132,7 +173,7 @@
           div.className = "student";
 
           div.innerHTML = `
-          
+
             <div class="name">
               ${name}
             </div>
@@ -171,7 +212,9 @@
 
       for (let i = 0; i < students.length; i++) {
 
-        const name = students[i][0];
+        const name =
+          students[i][0];
+
         let currentPoints =
           Number(students[i][1]);
 
@@ -190,11 +233,11 @@
 
         let finalPoints;
 
-        // PRIORITY:
-        // SET overrides everything
+        // SET OVERRIDES EVERYTHING
         if (setValue !== "") {
 
-          finalPoints = Number(setValue);
+          finalPoints =
+            Number(setValue);
 
         }
 
@@ -205,7 +248,7 @@
 
         }
 
-        // SEND UPDATE
+        // UPDATE DATABASE
         await fetch(
 
           `${API_URL}?action=update&name=${name}&points=${finalPoints}`
@@ -217,6 +260,46 @@
       alert("All changes saved!");
 
       loadStudents();
+
+    }
+
+    // ADD NEW STUDENT
+    function addStudent() {
+
+      const name =
+        document.getElementById("newName").value.trim();
+
+      const points =
+        document.getElementById("newPoints").value.trim();
+
+      // VALIDATION
+      if (!name || points === "") {
+
+        alert("Fill all fields.");
+
+        return;
+
+      }
+
+      fetch(
+
+        `${API_URL}?action=update&name=${name}&points=${points}`
+
+      )
+
+      .then(res => res.text())
+
+      .then(data => {
+
+        alert("Student added!");
+
+        document.getElementById("newName").value = "";
+
+        document.getElementById("newPoints").value = "";
+
+        loadStudents();
+
+      });
 
     }
 
