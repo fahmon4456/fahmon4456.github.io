@@ -2,104 +2,88 @@
 <html>
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Student Dashboard</title>
 
-<title>Student</title>
+  <style>
 
-<style>
+    body {
+      font-family: Arial;
+      background: #111;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-body {
-  font-family: Arial;
-  background: #f5f5f5;
-  margin: 0;
-  padding: 20px;
-  text-align: center;
-}
+    .card {
+      text-align: center;
+    }
 
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 400px;
-  margin: auto;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
+    h1 {
+      font-size: 60px;
+      margin: 0;
+    }
 
-.name {
-  font-size: 26px;
-  font-weight: bold;
-}
+    h2 {
+      font-size: 40px;
+      color: #00ff99;
+    }
 
-.points {
-  font-size: 20px;
-  margin-top: 10px;
-  color: #444;
-}
+  </style>
 
-button {
-  margin-top: 15px;
-  padding: 10px;
-  width: 100%;
-  border: none;
-  border-radius: 8px;
-  background: black;
-  color: white;
-}
-
-</style>
 </head>
 
 <body>
 
-<div class="card">
+  <div class="card">
 
-<div class="name" id="name">Loading...</div>
-<div class="points" id="points">...</div>
+    <h1 id="studentName">
+      Loading...
+    </h1>
 
-<button onclick="logout()">Logout</button>
+    <h2 id="studentPoints">
+      ...
+    </h2>
 
-</div>
+  </div>
 
-<script>
+  <script>
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbziHTPIKYehe8NEZStkfbh6uWL16TNxnQ9aaa0tXqFM6bpq6hcSupBUg1mIM1EYpnUK/exec";
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbziHTPIKYehe8NEZStkfbh6uWL16TNxnQ9aaa0tXqFM6bpq6hcSupBUg1mIM1EYpnUK/exec";
 
-const name =
-localStorage.getItem("studentName");
+    const studentName =
+      localStorage.getItem("studentName");
 
-// SECURITY CHECK (basic)
-if (!name) {
-  window.location.href = "index.html";
-}
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(data => {
 
-// LOAD DATA
-fetch(API_URL)
-.then(res => res.json())
-.then(data => {
+        const rows = data.slice(1);
 
-const rows = data.slice(1);
+        const student =
+          rows.find(row =>
+            row[0].toLowerCase() ===
+            studentName.toLowerCase()
+          );
 
-let found = rows.find(r => r[0] === name);
+        if (student) {
 
-if (!found) {
-  document.getElementById("name").innerText = name;
-  document.getElementById("points").innerText = "0 points";
-  return;
-}
+          document
+            .getElementById("studentName")
+            .innerText = student[0];
 
-document.getElementById("name").innerText = found[0];
-document.getElementById("points").innerText = found[1] + " points";
+          document
+            .getElementById("studentPoints")
+            .innerText =
+              student[1] + " points";
+        }
 
-});
+      });
 
-function logout() {
-localStorage.clear();
-window.location.href = "index.html";
-}
-
-</script>
+  </script>
 
 </body>
 </html>
