@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+
+  <style>
+
+    body {
+      font-family: Arial;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #222;
+    }
+
+    .student {
+      background: white;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .name {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .points {
+      margin-top: 5px;
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    input {
+      padding: 8px;
+      margin-right: 5px;
+      margin-top: 5px;
+      width: 100px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .save {
+      background: green;
+    }
+
+    .logout {
+      background: black;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <script>
+
+    // PROTECTION
+    if (localStorage.getItem("admin") !== "true") {
+
+      window.location.href = "index.html";
+
+    }
+
+  </script>
+
+  <h1>Admin Dashboard</h1>
+
+  <button
+    class="logout"
+    onclick="logout()">
+
+    Logout
+
+  </button>
+
+  <div id="students"></div>
+
+  <button
+    class="save"
+    onclick="saveAllChanges()">
+
+    Save All Changes
+
+  </button>
+
+  <script>
+
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbziHTPIKYehe8NEZStkfbh6uWL16TNxnQ9aaa0tXqFM6bpq6hcSupBUg1mIM1EYpnUK/exec";
+
+    let students = [];
+
+    // LOAD STUDENTS
+    function loadStudents() {
+
+      fetch(API_URL)
+
+      .then(res => res.json())
+
+      .then(data => {
+
+        students = data.slice(1);
+
+        const container =
+          document.getElementById("students");
+
+        container.innerHTML = "";
+
+        students.forEach((row, index) => {
+
+          const name = row[0];
+          const points = Number(row[1]);
+
+          const div =
+            document.createElement("div");
+
+          div.className = "student";
+
+          div.innerHTML = `
+          
+            <div class="name">
+              ${name}
+            </div>
+
+            <div class="points">
+              Current Points: ${points}
+            </div>
+
+            <input
+              type="number"
+              id="add-${index}"
+              placeholder="Add">
+
+            <input
+              type="number"
+              id="take-${index}"
+              placeholder="Take">
+
+            <input
+              type="number"
+              id="set-${index}"
+              placeholder="Set">
+
+          `;
+
+          container.appendChild(div);
+
+        });
+
+      });
+
+    }
+
+    // SAVE ALL CHANGES
+    async function saveAllChanges() {
+
+      for (let i = 0; i < students.length; i++) {
+
+        const name = students[i][0];
+        let currentPoints =
+          Number(students[i][1]);
+
+        const add =
+          Number(
+            document.getElementById(`add-${i}`).value
+          ) || 0;
+
+        const take =
+          Number(
+            document.getElementById(`take-${i}`).value
+          ) || 0;
+
+        const setValue =
+          document.getElementById(`set-${i}`).value;
+
+        let finalPoints;
+
+        // PRIORITY:
+        // SET overrides everything
+        if (setValue !== "") {
+
+          finalPoints = Number(setValue);
+
+        }
+
+        else {
+
+          finalPoints =
+            currentPoints + add - take;
+
+        }
+
+        // SEND UPDATE
+        await fetch(
+
+          `${API_URL}?action=update&name=${name}&points=${finalPoints}`
+
+        );
+
+      }
+
+      alert("All changes saved!");
+
+      loadStudents();
+
+    }
+
+    // LOGOUT
+    function logout() {
+
+      localStorage.removeItem("admin");
+
+      window.location.href = "index.html";
+
+    }
+
+    // START
+    loadStudents();
+
+  </script>
+
+</body>
+</html>
