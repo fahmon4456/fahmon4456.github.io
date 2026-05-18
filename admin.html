@@ -2,6 +2,7 @@
 <html>
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -9,191 +10,127 @@
 
 <style>
 
-/* ===== BASE ===== */
-body {
-  font-family: Arial;
-  background:#01261C;
-  margin: 0;
-  padding: 12px;
+body{
+font-family:Arial;
+background:#f5f5f5;
+margin:0;
+padding:15px;
 }
 
-/* ===== HEADER ===== */
-h1 {
-  font-size: 22px;
-  margin-bottom: 10px;
-}
-#header1{
-    color: #ffffff;
-   
-}
-/* ===== CARDS ===== */
-.topBox{
-    padding: 12px;
-  margin-top: 10px;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  box-shadow:0 1px 10px #04BF8A, 0 1px 10px #04BF8A!important;
-  border-radius: 24px!important;
-  background-color: #04bf8ad5!important;
-  border-color: #04bf8ad5!important;
-  color: #ffffff!important;
-    width: 800px;
-    height: 120px;
-    transition: all 3s ease-in-out;
-}
-.student {
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  box-shadow:0 1px 10px #04BF8A, 0 1px 10px #04BF8A;
-  border-radius: 24px!important;
-  background-color: #04BF8A!important;
-  border-color: #04BF8A!important;
-  color: #ffffff!important;
-    width: 800px;
-    height: 90px;
-    transition: all 3s ease-in-out;
+.topBox,
+.student{
+background:white;
+padding:15px;
+border-radius:12px;
+margin-bottom:15px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
-/* NAME + TEXT */
-.name {
-  font-size: 18px;
-  font-weight: bold;
+.name{
+font-size:24px;
+font-weight:bold;
 }
 
-.points {
-  font-size: 14px;
-  margin: 6px 0;
-  color: #444;
+.points{
+margin-top:5px;
+margin-bottom:10px;
 }
 
-/* ===== INPUTS ===== */
-input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+input{
+width:100%;
+padding:10px;
+margin-top:8px;
+border-radius:8px;
+border:1px solid #ccc;
+box-sizing:border-box;
 }
 
-/* ===== BUTTONS ===== */
-button {
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  box-shadow:0 1px 10px #232423, 0 1px 10px #e1e4e3!important;
-  width: 100%;
-  padding: 10px;
-  margin-top: 8px;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-size: 14px;
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:8px;
+color:white;
 }
 
-/* COLORS */
-.save { background: green; }
-.logout { background: black; }
-.addStudent { background: dodgerblue; }
-
-/* ===== TOP SECTION ===== */
-.topBox {
-  background: white;
-  padding: 12px;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+.save{
+background:green;
 }
+
 .logout{
-    padding-bottom: 10px;
-  }
-button:hover{
-    filter: brightness(80%);
-    cursor: pointer;
-    transform: scale(1.1);
-  }
-  button {
-    width: auto;
-    padding: 10px 15px;
-     transition: transform 0.3s ease;
-  }
+background:black;
+}
 
-/* ===== GRID FIX FOR SMALL SCREENS ===== */
-@media (min-width: 700px) {
+.addStudent{
+background:dodgerblue;
+}
 
-    #header1{
-    color: #ffffff;
-    text-shadow: #6caf6c;
-}
-  body {
-    max-width: 800px;
-    margin: auto;
-  }
-  .logout{
-    padding-bottom: 10px;
-  }
-button:hover{
-    filter: brightness(80%);
-    cursor: pointer;
-    transform: scale(1.1);
-  }
-  button {
-    width: auto;
-    padding: 10px 15px;
-     transition: transform 0.3s ease;
-  }
-
-  input {
-    width: auto;
-  }
-  
-}
-.addStudent {
-  border-bottom: 2px solid black;
-}
-#studentsb{
-    border-bottom: 2px solid black;
-    margin-top: 30px;
-}
-#studentsbt{
-    border-bottom: 2px solid black;
-    margin-bottom: 30px;
-}
 </style>
+
 </head>
 
 <body>
 
 <script>
-if (localStorage.getItem("admin") !== "true") {
-  window.location.href = "index.html";
+
+if(localStorage.getItem("admin") !== "true"){
+
+window.location.href = "index.html";
+
 }
+
 </script>
 
-<h1 id="header1">Admin Dashboard</h1>
+<h1>Teacher Dashboard</h1>
 
-<button class="logout" onclick="logout()">Logout</button>
+<button
+class="logout"
+onclick="logout()">
 
-<!-- ADD STUDENT -->
+Logout
+
+</button>
+
 <div class="topBox">
 
-  <h3>Add Student</h3>
+<h2>Add Student</h2>
 
-  <input id="newName" placeholder="Student name">
-  <input id="newPoints" type="number" placeholder="Points">
+<input
+id="newName"
+placeholder="Name">
 
-  <button class="addStudent" onclick="addStudent()">
-    Add Student
-  </button>
+<input
+id="newPoints"
+type="number"
+placeholder="Points">
+
+<input
+id="newSchool"
+placeholder="School">
+
+<input
+id="newProject"
+placeholder="Last Project">
+
+<button
+class="addStudent"
+onclick="addStudent()">
+
+Add Student
+
+</button>
 
 </div>
 
-<!-- STUDENTS -->
- <div id="studentsbt"></div>
 <div id="students"></div>
-<div id="studentsb"></div>
-<button class="save" onclick="saveAllChanges()">
-  Save All Changes
+
+<button
+class="save"
+onclick="saveAllChanges()">
+
+Save All Changes
+
 </button>
 
 <script>
@@ -203,33 +140,66 @@ const API_URL =
 
 let students = [];
 
-/* LOAD */
-function loadStudents() {
+function loadStudents(){
 
 fetch(API_URL)
+
 .then(res => res.json())
+
 .then(data => {
 
 students = data.slice(1);
 
-const container = document.getElementById("students");
+const container =
+document.getElementById("students");
+
 container.innerHTML = "";
 
-students.forEach((row, i) => {
+students.forEach((row,i) => {
 
 const name = row[0];
 const points = Number(row[1]);
 
-const div = document.createElement("div");
+const div =
+document.createElement("div");
+
 div.className = "student";
 
 div.innerHTML = `
-  <div class="name">${name}</div>
-  <div class="points">${points} points</div>
 
-  <input id="add-${i}" type="number" placeholder="Add">
-  <input id="take-${i}" type="number" placeholder="Take">
-  <input id="set-${i}" type="number" placeholder="Set">
+<div class="name">
+${name}
+</div>
+
+<div class="points">
+Current Points: ${points}
+</div>
+
+<input
+type="number"
+id="add-${i}"
+placeholder="Add">
+
+<input
+type="number"
+id="take-${i}"
+placeholder="Take">
+
+<input
+type="number"
+id="set-${i}"
+placeholder="Set">
+
+<input
+id="school-${i}"
+placeholder="School"
+value="${row[2] || ""}">
+
+<input
+id="project-${i}"
+placeholder="Last Project"
+value="${row[3] || ""}">
+
 `;
 
 container.appendChild(div);
@@ -240,61 +210,101 @@ container.appendChild(div);
 
 }
 
-/* SAVE ALL */
-async function saveAllChanges() {
+async function saveAllChanges(){
 
-for (let i = 0; i < students.length; i++) {
+for(let i = 0; i < students.length; i++){
 
 const name = students[i][0];
-let current = Number(students[i][1]);
 
-const add = Number(document.getElementById(`add-${i}`).value) || 0;
-const take = Number(document.getElementById(`take-${i}`).value) || 0;
-const setValue = document.getElementById(`set-${i}`).value;
+let currentPoints =
+Number(students[i][1]);
 
-let final;
+const add =
+Number(document.getElementById(`add-${i}`).value) || 0;
 
-if (setValue !== "") {
-final = Number(setValue);
-} else {
-final = current + add - take;
+const take =
+Number(document.getElementById(`take-${i}`).value) || 0;
+
+const setValue =
+document.getElementById(`set-${i}`).value;
+
+const school =
+document.getElementById(`school-${i}`).value;
+
+const project =
+document.getElementById(`project-${i}`).value;
+
+let finalPoints;
+
+if(setValue !== ""){
+
+finalPoints = Number(setValue);
+
+}
+
+else{
+
+finalPoints =
+currentPoints + add - take;
+
 }
 
 await fetch(
-`${API_URL}?action=update&name=${name}&points=${final}`
+
+`${API_URL}?action=update&name=${name}&points=${finalPoints}&school=${encodeURIComponent(school)}&project=${encodeURIComponent(project)}`
+
 );
 
 }
 
 alert("Saved!");
+
 loadStudents();
 
 }
 
-/* ADD STUDENT */
-function addStudent() {
+function addStudent(){
 
-const name = document.getElementById("newName").value.trim();
-const points = document.getElementById("newPoints").value.trim();
+const name =
+document.getElementById("newName").value.trim();
 
-if (!name || points === "") {
-alert("Fill all fields");
+const points =
+document.getElementById("newPoints").value.trim();
+
+const school =
+document.getElementById("newSchool").value.trim();
+
+const project =
+document.getElementById("newProject").value.trim();
+
+if(!name){
+
+alert("Enter name");
+
 return;
+
 }
 
-fetch(`${API_URL}?action=update&name=${name}&points=${points}`)
+fetch(
+
+`${API_URL}?action=update&name=${name}&points=${points}&school=${encodeURIComponent(school)}&project=${encodeURIComponent(project)}`
+
+)
+
 .then(() => {
-document.getElementById("newName").value = "";
-document.getElementById("newPoints").value = "";
+
 loadStudents();
+
 });
 
 }
 
-/* LOGOUT */
-function logout() {
+function logout(){
+
 localStorage.removeItem("admin");
+
 window.location.href = "index.html";
+
 }
 
 loadStudents();
