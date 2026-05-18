@@ -29,6 +29,13 @@
     h2 {
       font-size: 40px;
       color: #00ff99;
+      margin: 10px 0;
+    }
+
+    h3 {
+      font-size: 25px;
+      color: #cccccc;
+      margin: 8px 0;
     }
 
   </style>
@@ -46,6 +53,14 @@
     <h2 id="studentPoints">
       ...
     </h2>
+
+    <h3 id="studentSchool">
+      ...
+    </h3>
+
+    <h3 id="studentProject">
+      ...
+    </h3>
 
   </div>
 
@@ -79,6 +94,17 @@
             .getElementById("studentPoints")
             .innerText =
               student[1] + " points";
+
+          document
+            .getElementById("studentSchool")
+            .innerText =
+              "School: " + student[2];
+
+          document
+            .getElementById("studentProject")
+            .innerText =
+              "Last Project: " + student[3];
+
         }
 
       });
