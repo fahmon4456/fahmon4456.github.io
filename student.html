@@ -2,88 +2,140 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <title>Student Dashboard</title>
 
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    body {
-      font-family: Arial;
-      background: #111;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<title>Student</title>
 
-    .card {
-      text-align: center;
-    }
+<style>
 
-    h1 {
-      font-size: 60px;
-      margin: 0;
-    }
+body{
+font-family:Arial;
+background:#f5f5f5;
+margin:0;
+padding:20px;
+}
 
-    h2 {
-      font-size: 40px;
-      color: #00ff99;
-    }
+.card{
+background:white;
+padding:20px;
+border-radius:12px;
+max-width:500px;
+margin:auto;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
 
-  </style>
+.name{
+font-size:30px;
+font-weight:bold;
+}
+
+.info{
+margin-top:15px;
+font-size:18px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+border-radius:8px;
+background:black;
+color:white;
+}
+
+</style>
 
 </head>
 
 <body>
 
-  <div class="card">
+<div class="card">
 
-    <h1 id="studentName">
-      Loading...
-    </h1>
+<div class="name" id="name">
+Loading...
+</div>
 
-    <h2 id="studentPoints">
-      ...
-    </h2>
+<div class="info" id="points"></div>
 
-  </div>
+<div class="info" id="school"></div>
 
-  <script>
+<div class="info" id="project"></div>
 
-    const API_URL =
-      "https://script.google.com/macros/s/AKfycbziHTPIKYehe8NEZStkfbh6uWL16TNxnQ9aaa0tXqFM6bpq6hcSupBUg1mIM1EYpnUK/exec";
+<button onclick="showProfile()">
+Show My Profile
+</button>
 
-    const studentName =
-      localStorage.getItem("studentName");
+<button onclick="logout()">
+Logout
+</button>
 
-    fetch(API_URL)
-      .then(res => res.json())
-      .then(data => {
+</div>
 
-        const rows = data.slice(1);
+<script>
 
-        const student =
-          rows.find(row =>
-            row[0].toLowerCase() ===
-            studentName.toLowerCase()
-          );
+const API_URL =
+"https://script.google.com/macros/s/AKfycbziHTPIKYehe8NEZStkfbh6uWL16TNxnQ9aaa0tXqFM6bpq6hcSupBUg1mIM1EYpnUK/exec";
 
-        if (student) {
+const studentName =
+localStorage.getItem("studentName");
 
-          document
-            .getElementById("studentName")
-            .innerText = student[0];
+if(!studentName){
 
-          document
-            .getElementById("studentPoints")
-            .innerText =
-              student[1] + " points";
-        }
+window.location.href = "index.html";
 
-      });
+}
 
-  </script>
+let studentData = null;
+
+fetch(API_URL)
+
+.then(res => res.json())
+
+.then(data => {
+
+const rows = data.slice(1);
+
+studentData =
+rows.find(r => r[0] === studentName);
+
+});
+
+function showProfile(){
+
+if(!studentData){
+
+alert("Student not found");
+
+return;
+
+}
+
+document.getElementById("name")
+.innerText = studentData[0];
+
+document.getElementById("points")
+.innerText = "Points: " + studentData[1];
+
+document.getElementById("school")
+.innerText = "School: " + studentData[2];
+
+document.getElementById("project")
+.innerText = "Last Project: " + studentData[3];
+
+}
+
+function logout(){
+
+localStorage.removeItem("studentName");
+
+window.location.href = "index.html";
+
+}
+
+</script>
 
 </body>
 </html>
