@@ -2,7 +2,6 @@
 <html>
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -10,127 +9,130 @@
 
 <style>
 
-body{
-font-family:Arial;
-background:#f5f5f5;
-margin:0;
-padding:15px;
+/* ===== BASE ===== */
+body {
+  font-family: Arial;
+  background: #f5f5f5;
+  margin: 0;
+  padding: 12px;
 }
 
-.topBox,
-.student{
-background:white;
-padding:15px;
-border-radius:12px;
-margin-bottom:15px;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
+/* ===== HEADER ===== */
+h1 {
+  font-size: 22px;
+  margin-bottom: 10px;
 }
 
-.name{
-font-size:24px;
-font-weight:bold;
+/* ===== CARDS ===== */
+.student {
+  background: white;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.points{
-margin-top:5px;
-margin-bottom:10px;
+/* NAME + TEXT */
+.name {
+  font-size: 18px;
+  font-weight: bold;
 }
 
-input{
-width:100%;
-padding:10px;
-margin-top:8px;
-border-radius:8px;
-border:1px solid #ccc;
-box-sizing:border-box;
+.points {
+  font-size: 14px;
+  margin: 6px 0;
+  color: #444;
 }
 
-button{
-width:100%;
-padding:12px;
-margin-top:10px;
-border:none;
-border-radius:8px;
-color:white;
+/* ===== INPUTS ===== */
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
-.save{
-background:green;
+/* ===== BUTTONS ===== */
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
 }
 
-.logout{
-background:black;
+/* COLORS */
+.save { background: green; }
+.logout { background: black; }
+.addStudent { background: dodgerblue; }
+
+/* ===== TOP SECTION ===== */
+.topBox {
+  background: white;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.addStudent{
-background:dodgerblue;
+/* ===== GRID FIX FOR SMALL SCREENS ===== */
+@media (min-width: 700px) {
+
+  body {
+    max-width: 800px;
+    margin: auto;
+  }
+
+  button {
+    width: auto;
+    padding: 10px 15px;
+  }
+
+  input {
+    width: auto;
+  }
 }
 
 </style>
-
 </head>
 
 <body>
 
 <script>
-
-if(localStorage.getItem("admin") !== "true"){
-
-window.location.href = "index.html";
-
+if (localStorage.getItem("admin") !== "true") {
+  window.location.href = "index.html";
 }
-
 </script>
 
-<h1>Teacher Dashboard</h1>
+<h1>Admin Dashboard</h1>
 
-<button
-class="logout"
-onclick="logout()">
+<button class="logout" onclick="logout()">Logout</button>
 
-Logout
-
-</button>
-
+<!-- ADD STUDENT -->
 <div class="topBox">
 
-<h2>Add Student</h2>
+  <h3>Add Student</h3>
 
-<input
-id="newName"
-placeholder="Name">
+  <input id="newName" placeholder="Student name">
+  <input id="newPoints" type="number" placeholder="Points">
+  <input id="newSchool" placeholder="School">
+  <input id="newProject" placeholder="Last Project">
 
-<input
-id="newPoints"
-type="number"
-placeholder="Points">
-
-<input
-id="newSchool"
-placeholder="School">
-
-<input
-id="newProject"
-placeholder="Last Project">
-
-<button
-class="addStudent"
-onclick="addStudent()">
-
-Add Student
-
-</button>
+  <button class="addStudent" onclick="addStudent()">
+    Add Student
+  </button>
 
 </div>
 
+<!-- STUDENTS -->
 <div id="students"></div>
 
-<button
-class="save"
-onclick="saveAllChanges()">
-
-Save All Changes
-
+<button class="save" onclick="saveAllChanges()">
+  Save All Changes
 </button>
 
 <script>
@@ -140,66 +142,38 @@ const API_URL =
 
 let students = [];
 
-function loadStudents(){
+/* LOAD */
+function loadStudents() {
 
 fetch(API_URL)
-
 .then(res => res.json())
-
 .then(data => {
 
 students = data.slice(1);
 
-const container =
-document.getElementById("students");
-
+const container = document.getElementById("students");
 container.innerHTML = "";
 
-students.forEach((row,i) => {
+students.forEach((row, i) => {
 
 const name = row[0];
 const points = Number(row[1]);
+const school = row[2] || "";
+const project = row[3] || "";
 
-const div =
-document.createElement("div");
-
+const div = document.createElement("div");
 div.className = "student";
 
 div.innerHTML = `
+  <div class="name">${name}</div>
+  <div class="points">${points} points</div>
 
-<div class="name">
-${name}
-</div>
+  <input id="add-${i}" type="number" placeholder="Add">
+  <input id="take-${i}" type="number" placeholder="Take">
+  <input id="set-${i}" type="number" placeholder="Set">
 
-<div class="points">
-Current Points: ${points}
-</div>
-
-<input
-type="number"
-id="add-${i}"
-placeholder="Add">
-
-<input
-type="number"
-id="take-${i}"
-placeholder="Take">
-
-<input
-type="number"
-id="set-${i}"
-placeholder="Set">
-
-<input
-id="school-${i}"
-placeholder="School"
-value="${row[2] || ""}">
-
-<input
-id="project-${i}"
-placeholder="Last Project"
-value="${row[3] || ""}">
-
+  <input id="school-${i}" value="${school}" placeholder="School">
+  <input id="project-${i}" value="${project}" placeholder="Last Project">
 `;
 
 container.appendChild(div);
@@ -210,101 +184,68 @@ container.appendChild(div);
 
 }
 
-async function saveAllChanges(){
+/* SAVE ALL */
+async function saveAllChanges() {
 
-for(let i = 0; i < students.length; i++){
+for (let i = 0; i < students.length; i++) {
 
 const name = students[i][0];
+let current = Number(students[i][1]);
 
-let currentPoints =
-Number(students[i][1]);
+const add = Number(document.getElementById(`add-${i}`).value) || 0;
+const take = Number(document.getElementById(`take-${i}`).value) || 0;
+const setValue = document.getElementById(`set-${i}`).value;
 
-const add =
-Number(document.getElementById(`add-${i}`).value) || 0;
+const school = document.getElementById(`school-${i}`).value;
+const project = document.getElementById(`project-${i}`).value;
 
-const take =
-Number(document.getElementById(`take-${i}`).value) || 0;
+let final;
 
-const setValue =
-document.getElementById(`set-${i}`).value;
-
-const school =
-document.getElementById(`school-${i}`).value;
-
-const project =
-document.getElementById(`project-${i}`).value;
-
-let finalPoints;
-
-if(setValue !== ""){
-
-finalPoints = Number(setValue);
-
-}
-
-else{
-
-finalPoints =
-currentPoints + add - take;
-
+if (setValue !== "") {
+final = Number(setValue);
+} else {
+final = current + add - take;
 }
 
 await fetch(
-
-`${API_URL}?action=update&name=${name}&points=${finalPoints}&school=${encodeURIComponent(school)}&project=${encodeURIComponent(project)}`
-
+`${API_URL}?action=update&name=${name}&points=${final}&school=${encodeURIComponent(school)}&project=${encodeURIComponent(project)}`
 );
 
 }
 
 alert("Saved!");
-
 loadStudents();
 
 }
 
-function addStudent(){
+/* ADD STUDENT */
+function addStudent() {
 
-const name =
-document.getElementById("newName").value.trim();
+const name = document.getElementById("newName").value.trim();
+const points = document.getElementById("newPoints").value.trim();
+const school = document.getElementById("newSchool").value.trim();
+const project = document.getElementById("newProject").value.trim();
 
-const points =
-document.getElementById("newPoints").value.trim();
-
-const school =
-document.getElementById("newSchool").value.trim();
-
-const project =
-document.getElementById("newProject").value.trim();
-
-if(!name){
-
-alert("Enter name");
-
+if (!name || points === "") {
+alert("Fill all fields");
 return;
-
 }
 
-fetch(
-
-`${API_URL}?action=update&name=${name}&points=${points}&school=${encodeURIComponent(school)}&project=${encodeURIComponent(project)}`
-
-)
-
+fetch(`${API_URL}?action=update&name=${name}&points=${points}&school=${encodeURIComponent(school)}&project=${encodeURIComponent(project)}`)
 .then(() => {
-
+document.getElementById("newName").value = "";
+document.getElementById("newPoints").value = "";
+document.getElementById("newSchool").value = "";
+document.getElementById("newProject").value = "";
 loadStudents();
-
 });
 
 }
 
-function logout(){
-
+/* LOGOUT */
+function logout() {
 localStorage.removeItem("admin");
-
 window.location.href = "index.html";
-
 }
 
 loadStudents();
